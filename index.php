@@ -78,7 +78,12 @@
                                                                     // Vérification que les 2 mots de passes soient bien identique
                                                                     if($motdepasse == $motdepasseConfirm) {
 
-                                                                        
+                                                                        // Insertion des informations dans la base de données
+                                                                        $insertUser = $bdd->prepare("INSERT INTO membres(nom,prenom,pseudo,mail,password) VALUES (?,?,?,?,?)");
+                                                                        $insertUser->execute(array($nom,$prenom,$pseudo,$email,$motdepasse));
+
+                                                                        // On informe l'utilisateur que l'insertion a bien été effectué
+                                                                        $msgErreur = "Votre compte a bien été créé !";
 
                                                                     } else {
                                                                         $msgErreur = "Vos 2 mots de passes doivent être identique !";
