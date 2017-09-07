@@ -10,12 +10,76 @@
         // Sécurisation du contenu du formulaire pour éviter l'injection de code.
         $nom = htmlspecialchars($_POST['lastName']);
         $prenom = htmlspecialchars($_POST['firstName']);
+        $pseudo = htmlspecialchars($_POST['pseudo']);
         $email = htmlspecialchars($_POST['email']);
         $emailConfirm = htmlspecialchars($_POST['emailConfirm']);
 
         // Sécurisation des mots de passes pour qu'il ne soit pas en clair dans la base de données
         $motdepasse = sha1($_POST['motdepasse']);
         $motdepasseConfirm = sha1($_POST['motdepasseConfirm']);
+
+        // Vérification du nom de l'utilisateur
+        if(isset($nom) AND !empty($nom)) {
+
+            // Obtention de la longueur du nom de l'utilisateur
+            $nomLength = strlen($nom);
+            if($nomLength <= 255) {
+
+
+                // Vérification du prénom de l'utilisateur
+                if(isset($prenom) AND !empty($prenom)) {
+
+                    // Obtention de la longueur du prénom de l'utilisateur
+                    $prenomLength = strlen($prenom);
+                    if($prenomLength <= 255) {
+
+                        // Vérification du pseudo
+                        if(isset($pseudo) AND !empty($pseudo)) {
+
+                            // Récupération des pseudos dans la base de données
+                            $reqUser = $bdd->prepare("SELECT * FROM membres WHERE pseudo = ?");
+                            $reqUser->execute(array($pseudo));
+
+                            // On compte le nombre de ligne
+                            $pseudoExist = $reqUser->rowCount();
+
+                            // Vérification de l'existance du pseudo
+                            if($pseudoExist == 0) {
+
+                                // Obtention de la taille du pseudo
+                                $pseudoLength = strlen($pseudo);
+
+                                if($pseudoLength <= 255) {
+
+                                    
+
+                                } else {
+                                    $msgErreur = "Votre pseudo ne doit pas dépasser 255 caractères !";
+                                }
+
+                            } else {
+                                $msgErreur = "Le pseudo ".$pseudo." est déjà utilisé !";
+                            }
+
+                        } else {
+                            $msgErreur = "Vous devez saisir un pseudo !";
+                        }
+
+                    } else {
+                        $msgErreur = "Votre prénom ne doit pas dépasser 255 caractères !";
+                    }
+
+                } else {
+                    $msgErreur = "Vous devez saisir un prénom !";
+                }
+
+            } else {
+                $msgErreur = "Votre nom ne doit pas dépasser 255 caractères !";
+            }
+
+        } else {
+            $msgErreur = "Vous devez saisir un nom !";
+        }
     }
 
 ?>
@@ -31,6 +95,7 @@
         <h1>Inscription</h1>
     </header>
 
+    <!-- Formulaire d'inscription -->
     <form method="post" action="">
         <table>
             <tr>
@@ -93,6 +158,16 @@
                 <td></td>
                 <td>
                     <input type="submit" value="S'inscrire !" name="formInscription">
+                </td>
+            </tr>
+
+            <!-- Affichage des messages d'erreur -->
+            <tr>
+                <td></td>
+                <td>
+                    <?php
+                        echo '<font color="red">'.$msgErreur.'</font>';
+                    ?>
                 </td>
             </tr>
         </table>

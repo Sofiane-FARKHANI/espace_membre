@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:8889
--- Généré le :  Jeu 07 Septembre 2017 à 02:02
+-- Généré le :  Jeu 07 Septembre 2017 à 02:20
 -- Version du serveur :  5.6.35
 -- Version de PHP :  7.1.1
 
@@ -24,6 +24,7 @@ CREATE TABLE `membres` (
   `id` int(11) NOT NULL COMMENT 'identifiant unique d''un membre',
   `nom` varchar(255) NOT NULL,
   `prenom` varchar(255) NOT NULL,
+  `pseudo` varchar(255) NOT NULL,
   `mail` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table contenant les informations relatifs aux membres.';
