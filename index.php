@@ -1,7 +1,7 @@
 <?php
 
     // Connexion avec la base de données
-    $bdd = new PDO("mysql:host=127.0.0.1;dbname=git_espace_membre;charset=utf8","root","root");
+    $bdd = new PDO("mysql:host=localhost;dbname=git_espace_membre;charset=utf8","root","root");
 
     // Vérification que l'utilisateur a bien cliqué sur le bouton "S'inscrire !"
     if(isset($_POST['formInscription'])) {
@@ -51,7 +51,70 @@
 
                                 if($pseudoLength <= 255) {
 
-                                    
+                                    // Vérification de l'envoi du mail
+                                    if(isset($email) AND !empty($email)) {
+
+                                        // Vérification que l'adresse mail est valide
+                                        if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+
+                                            $emailLength = strlen($email);
+                                            if($emailLength <= 255) {
+
+                                                // Vérification de la confirmation de l'email
+                                                if(isset($emailConfirm) AND !empty($emailConfirm)) {
+
+                                                    // Vérification que les 2 adresses mail soit bien identique
+                                                    if($email == $emailConfirm) {
+
+                                                        // Vérification du mot de passe
+                                                        if(isset($motdepasse) AND !empty($motdepasse)) {
+
+                                                            $motdepasseLength = strlen($motdepasse);
+                                                            if($motdepasseLength <= 255) {
+
+                                                                // Vérification de la confirmation du mot de passe
+                                                                if(isset($motdepasseConfirm) AND !empty($motdepasseConfirm)) {
+
+                                                                    // Vérification que les 2 mots de passes soient bien identique
+                                                                    if($motdepasse == $motdepasseConfirm) {
+
+                                                                        
+
+                                                                    } else {
+                                                                        $msgErreur = "Vos 2 mots de passes doivent être identique !";
+                                                                    }
+
+                                                                } else {
+                                                                    $msgErreur = "Vous devez saisir la confirmation du mot de passe !";
+                                                                }
+
+                                                            } else {
+                                                                $msgErreur = "Votre mot de passe ne doit pas dépasser les 255 caractères !";
+                                                            }
+
+                                                        } else {
+                                                            $msgErreur = "Vous devez saisir un mot de passe !";
+                                                        }
+
+                                                    } else {
+                                                        $msgErreur = "Vos adresses mail doivent être identique !";
+                                                    }
+
+                                                } else {
+                                                    $msgErreur = "Vous devez saisir la confirmation de votre adresse mail";
+                                                }
+
+                                            } else {
+                                                $msgErreur = "Votre adresse mail ne doit dépasser 255 caractères !";
+                                            }
+
+                                        } else {
+                                            $msgErreur = "Votre adresse mail doit être valide !";
+                                        }
+
+                                    } else {
+                                        $msgErreur = "Vous devez saisir une adresse mail !";
+                                    }
 
                                 } else {
                                     $msgErreur = "Votre pseudo ne doit pas dépasser 255 caractères !";
