@@ -1,3 +1,25 @@
+<?php
+
+    // Connexion avec la base de données
+    $bdd = new PDO("mysql:host=127.0.0.1;dbname=git_espace_membre;charset=utf8","root","root");
+
+    // Vérification que l'utilisateur a bien cliqué sur le bouton "S'inscrire !"
+    if(isset($_POST['formInscription'])) {
+
+
+        // Sécurisation du contenu du formulaire pour éviter l'injection de code.
+        $nom = htmlspecialchars($_POST['lastName']);
+        $prenom = htmlspecialchars($_POST['firstName']);
+        $email = htmlspecialchars($_POST['email']);
+        $emailConfirm = htmlspecialchars($_POST['emailConfirm']);
+
+        // Sécurisation des mots de passes pour qu'il ne soit pas en clair dans la base de données
+        $motdepasse = sha1($_POST['motdepasse']);
+        $motdepasseConfirm = sha1($_POST['motdepasseConfirm']);
+    }
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -70,7 +92,7 @@
             <tr>
                 <td></td>
                 <td>
-                    <input type="submit" value="S'inscrire !">
+                    <input type="submit" value="S'inscrire !" name="formInscription">
                 </td>
             </tr>
         </table>
